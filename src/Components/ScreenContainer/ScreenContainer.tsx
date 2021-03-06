@@ -6,7 +6,7 @@ import R from '../../Utils/R';
 import LinearGradient from 'react-native-linear-gradient';
 
 export interface IScreenContainerProps {
-  children: React.ReactChild;
+  children: any;
   loading?: boolean;
 }
 

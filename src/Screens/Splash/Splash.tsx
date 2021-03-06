@@ -19,8 +19,6 @@ export default class Splash extends Component<
 > {
   constructor(props: ISplashScreenProps) {
     super(props);
-
-    setTimeout(this.navigateToHomeScreen, 2000);
   }
 
   navigateToHomeScreen = () => {
@@ -39,8 +37,9 @@ export default class Splash extends Component<
           <LottieView
             source={R.Animations.SplashAnimation}
             autoPlay
-            loop
+            loop={false}
             speed={0.5}
+            onAnimationFinish={this.navigateToHomeScreen}
           />
         </View>
       </ScreenContainer>

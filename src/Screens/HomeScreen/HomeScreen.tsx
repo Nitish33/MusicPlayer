@@ -2,13 +2,16 @@ import React, {Component} from 'react';
 import {
   Animated,
   Image,
+  LayoutAnimation,
   ListRenderItemInfo,
   StyleProp,
   StyleSheet,
   Text,
+  View,
   ViewStyle,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import BottomMiniPlayer from '../../Components/BottomMiniPlayer/BottomMiniPlayer';
 import ScreenContainer from '../../Components/ScreenContainer/ScreenContainer';
 import SongRow from '../../Components/SongRow/SongRow';
 import {registerEventListener} from '../../EventEmitter/EventEmitter';
@@ -45,7 +48,6 @@ export default class HomeScreen extends Component<
     this.state = {
       loading: true,
       data: [],
-      selectedIndex: 0,
     };
 
     this.scrollY = new Animated.Value(0);
@@ -53,12 +55,10 @@ export default class HomeScreen extends Component<
     this.fetchData();
 
     registerEventListener(this.onSongChangedListener, PlayerEvent.SONG_CHANGED);
-    registerEventListener(this.onPlayerStateChanged, PlayerEvent.MUSIC_PLAY);
-    registerEventListener(this.onPlayerStateChanged, PlayerEvent.MUSIC_STOP);
   }
 
   fetchData = () => {
-    fetch(`${R.Constants.Base_Url}/search?term=Punjabi`)
+    fetch(`${R.Constants.Base_Url}/search?term=Michael+jackson`)
       .then((response) => response.json())
       .then((data) => {
         const {results} = data;
@@ -69,7 +69,7 @@ export default class HomeScreen extends Component<
 
         this.setState({
           data: songs,
-          selectedSong: songs[0],
+          // selectedSong: songs[0],
         });
 
         PlayerManager.getManagerInstance().addMusics(songs);
@@ -168,6 +168,7 @@ export default class HomeScreen extends Component<
       alignSelf: 'flex-start',
       bottom: 60,
       left: 15,
+      right: 15,
       transform: [{translateY: bottomPositionInterpolatin}],
       //   fontSize: fontSizeInterpolation,
     };
@@ -175,6 +176,10 @@ export default class HomeScreen extends Component<
 
   renderListHeader = () => {
     const {selectedSong} = this.state;
+
+    if (!selectedSong) {
+      return <View style={{marginTop: 50}} />;
+    }
 
     const animatedHeaderStyle = this.headerAnimatedStyle();
     const headerContainerAnimatedStyle = this.headerContainerAnimatedStyle();
@@ -199,13 +204,13 @@ export default class HomeScreen extends Component<
             style={StyleSheet.absoluteFill}
           />
 
-          <Animated.Text style={headerTitleAnimatedStyle} numberOfLines={2}>
+          <Animated.Text style={headerTitleAnimatedStyle} numberOfLines={1}>
             {selectedSong?.name}
           </Animated.Text>
 
           <Animated.Text
             style={[headerTitleAnimatedStyle, {bottom: 45, fontSize: 12}]}
-            numberOfLines={2}>
+            numberOfLines={1}>
             {selectedSong?.artistName}
           </Animated.Text>
         </Animated.View>
@@ -215,16 +220,12 @@ export default class HomeScreen extends Component<
 
   onSongSelected = (song: SongModal, index: number) => {
     PlayerManager.getManagerInstance().playSelectedSong(song, index);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
 
-    this.setState(
-      {
-        selectedSong: song,
-        selectedIndex: index,
-      },
-      () => {
-        this.navigateToPlayerScreen(index);
-      },
-    );
+    this.setState({
+      selectedSong: song,
+      selectedIndex: index,
+    });
   };
 
   renderItems = (data: ListRenderItemInfo<SongModal>) => {
@@ -235,21 +236,15 @@ export default class HomeScreen extends Component<
       <SongRow
         index={index}
         song={item}
-        isSelected={selectedSong?.id === item?.id}
+        isSelected={selectedSong?.id === item?.id && selectedSong?.id}
         onSongSelected={this.onSongSelected}
       />
     );
   };
 
-  navigateToPlayerScreen = (index: number) => {
+  navigateToPlayerScreen = () => {
     const {navigation} = this.props;
-    const {selectedSong, data} = this.state;
-
-    navigation.navigate('Player', {
-      songs: data,
-      selectedSong: selectedSong,
-      selectedIndex: index,
-    });
+    navigation.navigate('Player');
   };
 
   onSongChangedListener = (data: any) => {
@@ -261,16 +256,13 @@ export default class HomeScreen extends Component<
     });
   };
 
-  onPlayerStateChanged = (state) => {
-    console.log('state is', state);
-  };
-
   render() {
-    const {data, loading, selectedSong} = this.state;
+    const {data, loading} = this.state;
 
     return (
       <ScreenContainer loading={loading}>
         <Animated.FlatList
+          contentContainerStyle={{paddingBottom: 80}}
           ListHeaderComponent={this.renderListHeader}
           ListHeaderComponentStyle={{zIndex: 1000}}
           data={data}
@@ -283,6 +275,8 @@ export default class HomeScreen extends Component<
             {useNativeDriver: true},
           )}
         />
+
+        <BottomMiniPlayer navigateToPlayer={this.navigateToPlayerScreen} />
       </ScreenContainer>
     );
   }

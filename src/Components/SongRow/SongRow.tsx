@@ -63,7 +63,7 @@ export default function SongRow(props: ISongRowProps) {
       )}
 
       <View style={Styles.textContainerStyle}>
-        <Text style={Styles.textStyle}>{song?.name}</Text>
+        <Text style={Styles.textStyle}>{song?.name ?? 'No title'}</Text>
         <Text style={Styles.artistNameStyle}>{song?.artistName}</Text>
       </View>
 

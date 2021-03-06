@@ -19,11 +19,14 @@ const styles = StyleSheet.create({
   containerStyle: {
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    flex: 1,
+    position: 'absolute',
     paddingTop: 50,
-    overflow: 'visible',
+    overflow: 'hidden',
+    top: 200,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
-
 
   artistTextStyle: {
     color: 'white',

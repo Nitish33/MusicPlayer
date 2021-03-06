@@ -25,7 +25,7 @@ export default function SongsCardList(props: ISongCardListProps) {
     const {item} = data;
 
     return (
-      <View style={{width: R.Dimensions.ScreenWidth}}>
+      <View style={{width: R.Dimensions.ScreenWidth, paddingHorizontal: 20}}>
         <LogoWithBackground song={item} containerStyle={{marginTop: -120}} />
 
         <Text style={Styles.songNameStyle} numberOfLines={1}>
@@ -68,6 +68,9 @@ export default function SongsCardList(props: ISongCardListProps) {
       pagingEnabled
       style={Styles.listStyle}
       renderItem={renderItems}
+      keyExtractor={(item) => {
+        return `${item.id}`;
+      }}
       onMomentumScrollEnd={onMomentumScrollEnd}
       getItemLayout={(_, index) => ({
         length: R.Dimensions.ScreenWidth,

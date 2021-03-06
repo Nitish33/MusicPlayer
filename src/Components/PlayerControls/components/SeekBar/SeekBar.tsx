@@ -51,8 +51,12 @@ export default function SeekBar() {
   return (
     <View>
       <View style={Styles.timeContainerStyle}>
-        <Text>{R.HelperFunctions.getTimeString(displayTime)}</Text>
-        <Text>{R.HelperFunctions.getTimeString(totalTime)}</Text>
+        <Text style={Styles.textStyle}>
+          {R.HelperFunctions.getTimeString(displayTime)}
+        </Text>
+        <Text style={Styles.textStyle}>
+          {R.HelperFunctions.getTimeString(totalTime)}
+        </Text>
       </View>
 
       <Slider
