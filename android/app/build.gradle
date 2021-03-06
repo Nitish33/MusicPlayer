@@ -187,6 +187,10 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
+//    Auto linking didn't worked, linking manually
+//    https://github.com/lottie-react-native/lottie-react-native/issues/712
+    implementation project(':lottie-react-native')
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }

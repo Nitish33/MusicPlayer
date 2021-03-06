@@ -35,7 +35,7 @@ export default class Splash extends Component<
             R.CommonStyles.screenContainerStyle,
           ]}>
           <LottieView
-            source={R.Animations.SplashAnimation}
+            source={R.Animations.PlayingMusicAnimation}
             autoPlay
             loop={false}
             speed={0.5}
