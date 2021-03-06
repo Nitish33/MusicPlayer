@@ -25,8 +25,13 @@ export default function SongsCardList(props: ISongCardListProps) {
     const {item} = data;
 
     return (
-      <View style={{width: R.Dimensions.ScreenWidth, paddingHorizontal: 20}}>
-        <LogoWithBackground song={item} containerStyle={{marginTop: -120}} />
+      <View
+        style={{
+          width: R.Dimensions.ScreenWidth,
+          paddingHorizontal: 20,
+          overflow: 'visible',
+        }}>
+        <LogoWithBackground song={item} />
 
         <Text style={Styles.songNameStyle} numberOfLines={1}>
           {item?.name}

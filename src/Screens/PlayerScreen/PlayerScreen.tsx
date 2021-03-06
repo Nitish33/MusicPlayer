@@ -57,14 +57,14 @@ export default class PlayerScreen extends Component<
         <View style={{flex: 1}}>
           <ScrollView
             contentContainerStyle={{
-              paddingTop: 200,
+              paddingTop: 50,
             }}
             showsVerticalScrollIndicator={false}>
             <SongsCardList songs={songs} onSongChange={onSongChanged} />
 
             <View
               style={{
-                paddingHorizontal: 2 * R.Dimensions.Padding.large,
+                paddingHorizontal: 2 * R.Dimensions.Padding.medium,
                 marginTop: 30,
               }}>
               <PlayerControls />

@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 15,
     color: 'white',
-    marginTop: 15,
+    marginTop: 5,
   },
 
   listStyle: {

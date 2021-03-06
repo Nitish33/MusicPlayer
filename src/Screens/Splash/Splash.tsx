@@ -1,6 +1,6 @@
 import {NavigationProp} from '@react-navigation/native';
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {Platform, Text, View} from 'react-native';
 import LottieView from 'lottie-react-native';
 import ScreenContainer from '../../Components/ScreenContainer/ScreenContainer';
 import {Navigation, Route} from './NavigationType';
@@ -35,7 +35,11 @@ export default class Splash extends Component<
             R.CommonStyles.screenContainerStyle,
           ]}>
           <LottieView
-            source={R.Animations.PlayingMusicAnimation}
+            source={
+              Platform.OS === 'android'
+                ? R.Animations.TestAnimation
+                : R.Animations.SplashAnimation
+            }
             autoPlay
             loop={false}
             speed={0.5}

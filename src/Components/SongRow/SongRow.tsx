@@ -1,5 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, Animated, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  Animated,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native';
 import LottieView from 'lottie-react-native';
 import SongModal from '../../Modals/SongModal';
 import Styles from './styles';
@@ -69,7 +76,11 @@ export default function SongRow(props: ISongRowProps) {
 
       {isSelected && playing.current && (
         <LottieView
-          source={R.Animations.PlayingMusicAnimation}
+          source={
+            Platform.OS === 'android'
+              ? R.Animations.TestAnimation
+              : R.Animations.PlayingMusicAnimation
+          }
           style={Styles.animationStyle}
           autoPlay
           loop

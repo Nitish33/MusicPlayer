@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, Platform} from 'react-native';
 import LottieView from 'lottie-react-native';
 import Styles from './styles';
 import R from '../../Utils/R';
@@ -21,7 +21,11 @@ export default function ScreenContainer(props: IScreenContainerProps) {
       {loading && (
         <View style={Styles.loaderStyle}>
           <LottieView
-            source={R.Animations.LoaderAnimation}
+            source={
+              Platform.OS === 'android'
+                ? R.Animations.TestAnimation
+                : R.Animations.LoaderAnimation
+            }
             loop
             autoPlay
             style={Styles.lottieViewStyle}

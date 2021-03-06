@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   logoContainerStyle: {
     alignItems: 'center',
     zIndex: 10,
-    height: ImageSize,
+    height: ImageSize + 4,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.0,
-
     elevation: 24,
   },
 
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(0, 133,134)',
     width: ImageSize + 3,
     height: ImageSize + 4,
-    marginTop: -3.5,
+
     borderRadius: 30,
   },
 
@@ -32,6 +31,7 @@ const styles = StyleSheet.create({
     height: ImageSize,
     position: 'absolute',
     borderRadius: 30,
+    marginTop: 4,
     borderColor: 'rgb(0, 133,134)',
   },
 
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     height: ImageSize,
     position: 'absolute',
     borderRadius: 30,
+    marginTop: 4,
     overflow: 'hidden',
   },
 });

@@ -69,7 +69,7 @@ export default class HomeScreen extends Component<
 
         this.setState({
           data: songs,
-          // selectedSong: songs[0],
+          selectedSong: songs[0],
         });
 
         PlayerManager.getManagerInstance().addMusics(songs);
@@ -187,7 +187,10 @@ export default class HomeScreen extends Component<
     const headerTitleAnimatedStyle = this.headerTitleAnimatedStyle();
 
     return (
-      <Animated.View style={animatedHeaderStyle} pointerEvents="none">
+      <Animated.View
+        style={animatedHeaderStyle}
+        pointerEvents="none"
+        collapsable={false}>
         <Animated.View style={headerContainerAnimatedStyle}>
           <Animated.Image
             style={headerBackgroundImageStyle}
@@ -262,9 +265,11 @@ export default class HomeScreen extends Component<
     return (
       <ScreenContainer loading={loading}>
         <Animated.FlatList
+          // This is to prevent header item from disappering when flatlist is scrolled
+          removeClippedSubviews={false}
           contentContainerStyle={{paddingBottom: 80}}
           ListHeaderComponent={this.renderListHeader}
-          ListHeaderComponentStyle={{zIndex: 1000}}
+          ListHeaderComponentStyle={{zIndex: 100}}
           data={data}
           renderItem={this.renderItems}
           keyExtractor={(item) => {
