@@ -5,6 +5,7 @@ import * as Dimensions from './Dimension';
 import * as Enums from './Enums';
 import * as Images from './Images';
 import CommonStyles from './CommonStyles';
+import * as HelperFunctions from './HelperFunctions';
 
 const R = {
   Animations,
@@ -14,6 +15,7 @@ const R = {
   Enums,
   Images,
   CommonStyles,
+  HelperFunctions,
 };
 
 export default R;

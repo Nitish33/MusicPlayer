@@ -6,6 +6,7 @@ import LogoWithBackground from '../../Components/LogoWithBackground/LogoWithBack
 import PlayerControls from '../../Components/PlayerControls/PlayerControls';
 import SongsCardList from '../../Components/SongsCardList/SongsCardList';
 import {emitSongChangedEvent} from '../../EventEmitter/EventEmitter';
+import PlayerManager from '../../Manager/PlayerManager';
 import SongModal from '../../Modals/SongModal';
 import R from '../../Utils/R';
 import {Navigation, Route} from './NavigationType';
@@ -28,7 +29,7 @@ export default class PlayerScreen extends Component<
     const songs = route.params.songs as Array<SongModal>;
 
     const onSongChanged = (song: SongModal, index: number) => {
-      emitSongChangedEvent(song);
+      PlayerManager.getManagerInstance().playSelectedSong(song, index);
     };
 
     return (

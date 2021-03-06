@@ -1,9 +1,15 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, Animated, TouchableOpacity, Image} from 'react-native';
 import LottieView from 'lottie-react-native';
 import SongModal from '../../Modals/SongModal';
 import Styles from './styles';
 import R from '../../Utils/R';
+import PlayerManager from '../../Manager/PlayerManager';
+import {
+  registerEventListener,
+  removeListener,
+} from '../../EventEmitter/EventEmitter';
+import {PlayerEvent} from '../../Utils/Enums';
 
 export interface ISongRowProps {
   song: SongModal;
@@ -15,6 +21,24 @@ export interface ISongRowProps {
 export default function SongRow(props: ISongRowProps) {
   const {song, isSelected, onSongSelected, index} = props;
 
+  const [playing, updatePlaying] = useState({
+    current: PlayerManager.getManagerInstance().isPlaying,
+  });
+
+  const updatePlayState = (state: any) => {
+    updatePlaying({current: state.songPlaying});
+  };
+
+  useEffect(() => {
+    registerEventListener(updatePlayState, PlayerEvent.MUSIC_PLAY);
+    registerEventListener(updatePlayState, PlayerEvent.MUSIC_STOP);
+
+    return () => {
+      removeListener(updatePlayState, PlayerEvent.MUSIC_STOP);
+      removeListener(updatePlayState, PlayerEvent.MUSIC_PLAY);
+    };
+  }, []);
+
   return (
     <TouchableOpacity
       style={Styles.containerStyle}
@@ -22,17 +46,20 @@ export default function SongRow(props: ISongRowProps) {
         onSongSelected?.(song, index);
       }}>
       {isSelected && (
-        <View
-          style={{
-            position: 'absolute',
-            width: 20,
-            left: 10,
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
+        <TouchableOpacity
+          style={Styles.buttonContainer}
+          onPress={() => {
+            if (playing.current) {
+              PlayerManager.getManagerInstance().pauseSong();
+            } else {
+              PlayerManager.getManagerInstance().playSong();
+            }
           }}>
-          <Image source={R.Images.Play} style={{width: 8, height: 8}} />
-        </View>
+          <Image
+            source={playing.current ? R.Images.Pause : R.Images.Play}
+            style={Styles.logoStyle}
+          />
+        </TouchableOpacity>
       )}
 
       <View style={Styles.textContainerStyle}>
@@ -40,15 +67,10 @@ export default function SongRow(props: ISongRowProps) {
         <Text style={Styles.artistNameStyle}>{song?.artistName}</Text>
       </View>
 
-      {isSelected && (
+      {isSelected && playing.current && (
         <LottieView
           source={R.Animations.PlayingMusicAnimation}
-          style={{
-            width: 45,
-            // height: 45,
-            // height: 20,
-            transform: [{scaleX: 1.5}, {scaleY: 1.5}],
-          }}
+          style={Styles.animationStyle}
           autoPlay
           loop
         />

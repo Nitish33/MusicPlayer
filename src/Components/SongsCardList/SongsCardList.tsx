@@ -1,18 +1,25 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {View, Text, FlatList, ListRenderItemInfo} from 'react-native';
+import {
+  registerEventListener,
+  removeListener,
+} from '../../EventEmitter/EventEmitter';
+import PlayerManager from '../../Manager/PlayerManager';
 import SongModal from '../../Modals/SongModal';
+import {PlayerEvent} from '../../Utils/Enums';
 import R from '../../Utils/R';
 import LogoWithBackground from '../LogoWithBackground/LogoWithBackground';
 import Styles from './styles';
 
 export interface ISongCardListProps {
   songs: Array<SongModal>;
-  initialIndex?: number;
   onSongChange?: (song: SongModal, index: number) => void;
 }
 
 export default function SongsCardList(props: ISongCardListProps) {
-  const {songs, initialIndex = 0, onSongChange} = props;
+  const scrollRef = useRef<FlatList>();
+
+  const {songs, onSongChange} = props;
 
   const renderItems = (data: ListRenderItemInfo<SongModal>) => {
     const {item} = data;
@@ -36,9 +43,25 @@ export default function SongsCardList(props: ISongCardListProps) {
     onSongChange?.(songs[index], index);
   };
 
+  const onSongChanged = (data: any) => {
+    const {index} = data;
+
+    scrollRef.current?.scrollToIndex({animated: true, index: index});
+  };
+
+  useEffect(() => {
+    registerEventListener(onSongChanged, PlayerEvent.SONG_CHANGED);
+    return () => {
+      removeListener(onSongChanged, PlayerEvent.SONG_CHANGED);
+    };
+  }, []);
+
   return (
     <FlatList
-      initialScrollIndex={initialIndex}
+      ref={(ref) => {
+        scrollRef.current = ref;
+      }}
+      initialScrollIndex={PlayerManager.getManagerInstance().currentSongIndex}
       horizontal={true}
       data={songs}
       showsHorizontalScrollIndicator={false}

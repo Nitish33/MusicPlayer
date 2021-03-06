@@ -12,6 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ScreenContainer from '../../Components/ScreenContainer/ScreenContainer';
 import SongRow from '../../Components/SongRow/SongRow';
 import {registerEventListener} from '../../EventEmitter/EventEmitter';
+import PlayerManager from '../../Manager/PlayerManager';
 import SongModal from '../../Modals/SongModal';
 import {PlayerEvent} from '../../Utils/Enums';
 import R from '../../Utils/R';
@@ -29,6 +30,7 @@ export interface IHomeScreenState {
   loading: boolean;
   data: Array<SongModal>;
   selectedSong?: SongModal;
+  selectedIndex?: number;
 }
 
 export default class HomeScreen extends Component<
@@ -43,6 +45,7 @@ export default class HomeScreen extends Component<
     this.state = {
       loading: true,
       data: [],
+      selectedIndex: 0,
     };
 
     this.scrollY = new Animated.Value(0);
@@ -68,10 +71,10 @@ export default class HomeScreen extends Component<
           data: songs,
           selectedSong: songs[0],
         });
+
+        PlayerManager.getManagerInstance().addMusics(songs);
       })
-      .catch((error) => {
-        console.log('error is', error);
-      })
+      .catch((error) => {})
       .finally(() => {
         this.setState({
           loading: false,
@@ -163,7 +166,7 @@ export default class HomeScreen extends Component<
       fontSize: 25,
       fontWeight: 'bold',
       alignSelf: 'flex-start',
-      bottom: 50,
+      bottom: 60,
       left: 15,
       transform: [{translateY: bottomPositionInterpolatin}],
       //   fontSize: fontSizeInterpolation,
@@ -200,7 +203,9 @@ export default class HomeScreen extends Component<
             {selectedSong?.name}
           </Animated.Text>
 
-          <Animated.Text style={headerTitleAnimatedStyle} numberOfLines={2}>
+          <Animated.Text
+            style={[headerTitleAnimatedStyle, {bottom: 45, fontSize: 12}]}
+            numberOfLines={2}>
             {selectedSong?.artistName}
           </Animated.Text>
         </Animated.View>
@@ -209,9 +214,12 @@ export default class HomeScreen extends Component<
   };
 
   onSongSelected = (song: SongModal, index: number) => {
+    PlayerManager.getManagerInstance().playSelectedSong(song, index);
+
     this.setState(
       {
         selectedSong: song,
+        selectedIndex: index,
       },
       () => {
         this.navigateToPlayerScreen(index);
@@ -244,12 +252,17 @@ export default class HomeScreen extends Component<
     });
   };
 
-  onSongChangedListener = (song: SongModal) => {
-    console.log('Changed new song', song);
+  onSongChangedListener = (data: any) => {
+    const {song, index} = data;
+
+    this.setState({
+      selectedSong: song,
+      selectedIndex: index,
+    });
   };
 
   onPlayerStateChanged = (state) => {
-    console.log('player state is', state);
+    console.log('state is', state);
   };
 
   render() {

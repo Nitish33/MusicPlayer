@@ -22,6 +22,25 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: 'rgb(231,242,243)',
   },
+
+  buttonContainer: {
+    position: 'absolute',
+    width: 40,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  logoStyle: {
+    width: 8,
+    tintColor: 'white',
+    height: 8,
+  },
+
+  animationStyle: {
+    width: 45,
+    transform: [{scaleX: 1.5}, {scaleY: 1.5}],
+  },
 });
 
 export default styles;

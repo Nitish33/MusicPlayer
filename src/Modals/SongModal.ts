@@ -1,3 +1,5 @@
+import R from '../Utils/R';
+
 export default class SongModal {
   artistId: number;
   artistName: string;
@@ -24,12 +26,7 @@ export default class SongModal {
   };
 
   getTimeString = () => {
-    const totalSecons = this.trackTimeMillis / 1000;
-
-    const minutes = Math.floor(totalSecons / 60);
-    const seconds = totalSecons % 60;
-
-    return `${minutes}:${seconds}`;
+    return R.HelperFunctions.getTimeString(this.trackTimeMillis);
   };
 
   getTimeInSeconds = () => {
