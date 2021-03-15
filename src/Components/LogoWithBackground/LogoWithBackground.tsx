@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Image, ViewStyle} from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
+import {SharedElement} from 'react-navigation-shared-element';
 import SongModal from '../../Modals/SongModal';
 import Styles from './styles';
 
@@ -16,10 +17,12 @@ export default function LogoWithBackground(props: ILogoWithBackgroundProps) {
     <View style={[Styles.logoContainerStyle, containerStyle]}>
       <View style={Styles.borderOverlayStyle} />
 
-      <Image
-        style={Styles.logoStyle}
-        source={{uri: song?.getArtWorkImageWithSize(200, 200)}}
-      />
+      <SharedElement id={`${song.id}`} style={Styles.logoStyle}>
+        <Image
+          style={[Styles.logoStyle, {marginTop: 0}]}
+          source={{uri: song?.getArtWorkImageWithSize(200, 200)}}
+        />
+      </SharedElement>
 
       <RadialGradient
         style={Styles.radialGradientStyle}

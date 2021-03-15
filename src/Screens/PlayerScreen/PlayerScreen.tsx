@@ -19,12 +19,8 @@ export interface IPlayerScreenProps {
 
 export interface IPlayerScreenState {}
 
-export default class PlayerScreen extends Component<
-  IPlayerScreenProps,
-  IPlayerScreenState
-> {
+class PlayerScreen extends Component<IPlayerScreenProps, IPlayerScreenState> {
   render() {
-    const {route} = this.props;
     const songs = PlayerManager.getManagerInstance().songs;
 
     const onSongChanged = (song: SongModal, index: number) => {
@@ -87,3 +83,13 @@ export default class PlayerScreen extends Component<
     );
   }
 }
+
+PlayerScreen.sharedElements = () => {
+  const songs = PlayerManager.getManagerInstance().songs;
+
+  return songs?.map((song) => {
+    return `${song?.id}`;
+  });
+};
+
+export default PlayerScreen;

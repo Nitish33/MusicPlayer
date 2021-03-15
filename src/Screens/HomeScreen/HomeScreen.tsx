@@ -11,6 +11,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {SharedElement} from 'react-navigation-shared-element';
 import BottomMiniPlayer from '../../Components/BottomMiniPlayer/BottomMiniPlayer';
 import ScreenContainer from '../../Components/ScreenContainer/ScreenContainer';
 import SongRow from '../../Components/SongRow/SongRow';
@@ -192,13 +193,19 @@ export default class HomeScreen extends Component<
         pointerEvents="none"
         collapsable={false}>
         <Animated.View style={headerContainerAnimatedStyle}>
-          <Animated.Image
-            style={headerBackgroundImageStyle}
-            source={{
-              uri: selectedSong?.getArtWorkImageWithSize(600, 600),
-            }}
-            resizeMode="cover"
-          />
+          <Animated.View style={[headerBackgroundImageStyle]}>
+            <SharedElement
+              id={`${selectedSong?.id}`}
+              style={StyleSheet.absoluteFill}>
+              <Image
+                style={[StyleSheet.absoluteFill]}
+                source={{
+                  uri: selectedSong?.getArtWorkImageWithSize(600, 600),
+                }}
+                resizeMode="cover"
+              />
+            </SharedElement>
+          </Animated.View>
 
           <LinearGradient
             colors={['#0000', '#000000FF']}

@@ -4,9 +4,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationType} from './NavigationType';
 import Splash from '../Screens/Splash/Splash';
 import HomeScreen from '../Screens/HomeScreen/HomeScreen';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 import PlayerScreen from '../Screens/PlayerScreen/PlayerScreen';
 
-const StackCreator = createStackNavigator<NavigationType>();
+const StackCreator = createSharedElementStackNavigator<NavigationType>();
 
 const AppStack = () => {
   return (
